@@ -4,10 +4,9 @@ import MainContent from '../components/MainContent'
 
 const Home = () => {
   return (
-    <>
-      <Header />
+    <div>
       <MainContent />
-    </>
+    </div>
   )
 }
 

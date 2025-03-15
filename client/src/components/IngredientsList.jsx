@@ -4,10 +4,7 @@ const IngredientsList = (props) => {
 	return (
 		<section>
 			<div className="ingredients-container">
-				<h2>Ingredients on hand:</h2>
-				{/* <ol className="ingredients-list">
-					{props.ingredients.map(ingredient => <li key={ingredient}>{ingredient}</li>)}
-				</ol> */}
+				<h2>Available Ingredients</h2>
 				<table className="ingredients-table">
 				<thead>
 					<tr>
@@ -36,8 +33,8 @@ const IngredientsList = (props) => {
 			{props.ingredients.length > 0 && (
 				<div className="get-recipe-container" ref={props.recipeRef}>
 					<div>
-						<h2>Ready for a recipe?</h2>
-						<p>Generate a recipe from your list of ingredients</p>
+						<h2>Ready for a delicious recipe ?</h2>
+						<p>Generate a unique recipe using your list of ingredients!</p>
 					</div>
 					<div>
 						<select
@@ -64,7 +61,7 @@ const IngredientsList = (props) => {
 							<option value="false">No</option>
 						</select>
 					</div>
-					<button onClick={props.getRecipe} className="get-recipe-btn">Get a recipe</button>
+					<button onClick={props.getRecipe} className="get-recipe-btn">Generate a Recipe</button>
 				</div>
 			)}
 		</section>

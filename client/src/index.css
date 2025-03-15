@@ -1,25 +1,18 @@
-:root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 * {
+  font-family: Poppins, sans-serif;
+  /* font-weight: 400; */
   box-sizing: border-box;
 }
 
 body {
   margin: 0;
-  background-color: #FAFAF8;
+  padding: 0;
 }
 
 a {
@@ -45,10 +38,9 @@ a:hover {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	padding: 6px 40px;
+	padding: 30px 40px;
 	background-color: #fff;
 	box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.06), 0 1px 3px 0 rgba(0, 0, 0, 0.1);
-	margin-bottom: 70px;
 }
 
 .brand-container {
@@ -58,8 +50,8 @@ a:hover {
 }
 
 .brand-container .logo {
-	width: 40px;
-	height: 40px;
+	width: 200px;
+	height: 80px;
 }
 
 .brand-container .brand {
@@ -71,8 +63,6 @@ a:hover {
 	display: flex;
 	align-items: center;
 	gap: 10px; 
-  width: 40px;
-  height: 40px;
 }
 
 
@@ -94,13 +84,19 @@ form.ingredients-input {
 
 .ingredients-input > button,
 .ingredients-clear {
-  width: 183px;
+  /* width: 160px; */
   height: 38px;
-  background-color: #141413;
+  background-color: #611BBD;
   color: white;
   padding: 9px 17px;
   border-radius: 6px;
   cursor: pointer;
+  border: none;
+  outline: none;
+
+  &:hover {
+    background-color: #49247A;
+  }
 }
 
 .ingredients-clear {
@@ -167,7 +163,7 @@ form.ingredients-input {
   justify-content: space-between;
   background-color: #F0EFEB;
   margin: 30px;
-  padding: 8px 41px;
+  padding: 18px 41px;
   border-radius: 8px;
 }
 
@@ -183,10 +179,9 @@ form.ingredients-input {
 }
 
 .get-recipe-container > .get-recipe-btn {
-  width: 115px;
   height: 38px;
   border-radius: 6px;
-  background-color: #D17557;
+  background-color: #49247A;
   font-size: .875rem;
   font-weight: 500;
   padding: 9px 17px;
@@ -194,26 +189,53 @@ form.ingredients-input {
   color: white;
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .05);
   cursor: pointer;
+
+  &:hover {
+    background-color: #611BBD;
+  }
 }
 
 .get-recipe-container select {
-  width: 200px;
+  width: 220px; 
   height: 38px;
-  padding: 9px 13px;
-  border-radius: 6px;
-  border: 1px solid black;
-  margin-right: 12px;
-  background-color: white;
+  padding: 0 10px;
+  border-radius: 8px;
+  border: 1px solid #49247A;
+  background-color: #611BBD;
+  color: white; 
   font-size: 16px;
   cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  appearance: none;
+  text-align: left;
+  margin-right: 20px;
 }
 
+.get-recipe-container select {
+  background-image: linear-gradient(45deg, transparent 50%, white 50%),
+                    linear-gradient(135deg, white 50%, transparent 50%);
+  background-position: calc(100% - 15px) center, calc(100% - 10px) center;
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+}
+
+.get-recipe-container select:hover {
+  background-color: #611BBD; 
+}
+
+.get-recipe-container select:focus {
+  outline: none;
+  box-shadow: 0 0 8px rgba(97, 27, 189, 0.8);
+}
+
+
 section.suggested-recipe-container {
-  color: #475467;
-  line-height: 28px;
-  font-size: 1.125rem;
+  /* color: #64748B; */
+  line-height: 30px;
+  font-size: 16px;
   font-weight: 400;
-  margin: 60px;
+  margin: 40px 60px 60px;
+  padding-bottom: 40px;
 }
 
 .suggested-recipe-container ul li, .suggested-recipe-container ol li {
@@ -266,4 +288,37 @@ section.suggested-recipe-container {
     margin-top: 10px;
     margin-bottom: 10px;
   }
+}
+
+.not-found-container {
+  display: flex;
+  gap: 20px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  color: black;
+}
+
+.not-found-container>img {
+  width: 200px;
+}
+
+.not-found-container>p {
+  font-size: 14px;
+}
+
+.home-button {
+  background-color: #611BBD;
+  color: white;
+  padding: 6px 10px;
+  font-size: 14px;
+  text-decoration: none;
+  border-radius: 6px;
+  transition: background 0.3s ease;
+}
+
+.home-button:hover {
+  background-color: #7D3FF2;
+  color: white;
 }

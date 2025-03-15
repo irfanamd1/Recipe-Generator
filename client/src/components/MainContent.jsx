@@ -1,8 +1,16 @@
 import { useState, useRef, useEffect } from 'react'
 import IngredientsList from './IngredientsList'
 import GeminiRecipe from './GeminiRecipe'
+import { Link } from 'react-router-dom'
+import { useUser } from '@clerk/clerk-react'
 
 const MainContent = () => {
+
+	const { user } = useUser();
+
+	const name = user.fullName
+
+	const email = user.primaryEmailAddress.emailAddress	
 
 	const [ingredients, setIngredients] =  useState([])
 	const [loading, setLoading] = useState(false);
@@ -53,11 +61,16 @@ const MainContent = () => {
 			body: JSON.stringify({
 				ingredients,
 				foodStyle,
-				allowExtraIngredients
+				allowExtraIngredients,
+				name,
+				email
 			})
 		})
 
-		const data = await res.json()
+        const data = await res.json();
+
+		console.log(data, '>');
+		
 
 		setRecipe(data.response)
 		setIngredients([]);
@@ -67,13 +80,17 @@ const MainContent = () => {
 	return (
 		<main>
 			{
+				recipe ? null : <Link to='/history'><button className='bg-black text-white px-4 py-1 rounded-sm cursor-pointer ml-10'>History</button></Link>
+			}
+			
+			{
 				recipe ?
 					<button className='ingredients-clear' onClick={ clearFun }>Clear Recipe</button>
 				:
 					<form onSubmit={addIngredient} method='POST' className='ingredients-input' >
-						<input
+						<input 
 							type="text"
-							placeholder="e.g. Tomato" 
+							placeholder="e.g. Chicken" 
 							aria-label="Add ingredient"
 							name="ingredient"
 							ref={inputRef}
@@ -106,12 +123,11 @@ const MainContent = () => {
 			{loading && (
 			<div className="loading-overlay">
 				<div className="loading-text">
-				<span className="text">Generating Recipe</span>
-				<span className="dots">...</span>
+				<span className="text">Generating Recipe </span>
+				<span className="dots"> ...</span>
 				</div>
 			</div>
 			)}
-
 		</main>
 	)
 }
