@@ -2,10 +2,16 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useUser } from '@clerk/clerk-react';
 import { FaRegTrashAlt } from "react-icons/fa";
+import axios from "axios"
 
 const HistoryCont = () => {
+
     const { user } = useUser();
+
     const email = user.primaryEmailAddress.emailAddress;
+
+    const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+
     const [recipes, setRecipes] = useState([]);
 
     const extractRecipeName = (recipeText) => {
@@ -19,47 +25,38 @@ const HistoryCont = () => {
   
       return lines.length > 0 ? lines[0] : 'Unknown Recipe';
   };
-  
-  const deleteRecipe = async (id) => {
-    try {
-        const res = await fetch(`/api/recipes/${id}`, {
-            method: "DELETE",
-        });
 
-        if (!res.ok) {
-            const data = await res.json();
-            throw new Error(data.message || "Failed to delete recipe.");
-        }
+const deleteRecipe = async (id) => {
+    try {
+        const res = await axios.delete(`${BACKEND_URL}/api/recipes/${id}`);
 
         setRecipes((prev) => prev.filter((recipe) => recipe._id !== id));
     } catch (err) {
         console.error("Error deleting recipe:", err);
-        setError(err.message);
+        setError(err.response?.data?.message || "Failed to delete recipe.");
     }
 };
+
 
 
 useEffect(() => {
     const fetchRecipes = async () => {
         try {
-            // Ensure email is correctly fetched from Clerk
             if (!email) {
                 console.error("User email not found.");
                 return;
             }
 
-            const res = await fetch(`/api/recipes?email=${encodeURIComponent(email)}`);
-            const data = await res.json();
+            const res = await axios.get(`${BACKEND_URL}/api/recipes`, {
+                params: { email }
+            });
 
-            if (!res.ok) {
-                throw new Error(data.message || "Failed to fetch recipes.");
-            }
-
-            setRecipes(data.recipes);
+            setRecipes(res.data.recipes);
         } catch (err) {
-            console.error("Error fetching recipes:", err.message);
+            console.error("Error fetching recipes:", err.response?.data?.message || err.message);
         }
     };
+
     fetchRecipes();
 }, [email]);
     

@@ -3,6 +3,7 @@ import IngredientsList from './IngredientsList'
 import GeminiRecipe from './GeminiRecipe'
 import { Link } from 'react-router-dom'
 import { useUser } from '@clerk/clerk-react'
+import axios from 'axios'
 
 const MainContent = () => {
 
@@ -11,6 +12,8 @@ const MainContent = () => {
 	const name = user.fullName
 
 	const email = user.primaryEmailAddress.emailAddress	
+
+	const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 	const [ingredients, setIngredients] =  useState([])
 	const [loading, setLoading] = useState(false);
@@ -53,26 +56,15 @@ const MainContent = () => {
 
 	const getRecipe = async() => {
 		setLoading(true);
-		const res = await fetch('/api/generateRecipe', {
-			method: 'POST',
-			headers: {
-				"Content-Type": "application/json"
-			},
-			body: JSON.stringify({
-				ingredients,
-				foodStyle,
-				allowExtraIngredients,
-				name,
-				email
-			})
-		})
+		const res = await axios.post(`${BACKEND_URL}/api/generateRecipe`, {
+            ingredients,
+            foodStyle,
+            allowExtraIngredients,
+            name,
+            email
+        });
 
-        const data = await res.json();
-
-		console.log(data, '>');
-		
-
-		setRecipe(data.response)
+        setRecipe(res.data.response);		
 		setIngredients([]);
 		setLoading(false);
 	}
