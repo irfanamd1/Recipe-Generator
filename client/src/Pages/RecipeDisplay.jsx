@@ -1,9 +1,13 @@
-import Header from '../components/Header';
+import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
 const RecipeDisplay = () => {
+
   const { recipeId } = useParams();
+
+  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+
   const [recipe, setRecipe] = useState(null);
 
   const cleanRecipeText = (text) => {
@@ -17,15 +21,17 @@ const RecipeDisplay = () => {
   useEffect(() => {
     const fetchRecipe = async () => {
       try {
-        const res = await fetch(`/api/recipe/${recipeId}`);
-        const data = await res.json();
-        const cleanedRecipe = cleanRecipeText(data.recipe.recipe); // Clean the text
-        setRecipe({ ...data.recipe, recipe: cleanedRecipe });
+        const res = await axios.get(`${BACKEND_URL}/api/recipe/${recipeId}`);
+        const cleanedRecipe = cleanRecipeText(res.data.recipe.recipe); // Clean the text
+        setRecipe({ ...res.data.recipe, recipe: cleanedRecipe });
       } catch (err) {
         console.error("Error fetching recipe:", err);
       }
     };
-    fetchRecipe();
+  
+    if (recipeId) {
+      fetchRecipe();
+    }
   }, [recipeId]);
 
   if (!recipe) {
