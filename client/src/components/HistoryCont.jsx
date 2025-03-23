@@ -63,7 +63,7 @@ useEffect(() => {
 
     return (
         <div className="mx-4">
-            <Link to='/'><button className='mb-3 ml-10 px-3 py-1 bg-black text-white rounded-sm text-sm'>⮘&nbsp;Go Back</button></Link>
+            <Link to='/'><button className='mb-3 ml-4 md:ml-10 px-3 py-1 bg-black text-white rounded-sm text-sm'>Go Back</button></Link>
             <h1 className="text-2xl font-bold mb-4 text-center">Recipe History</h1>
             {recipes.length > 0 ? (
                 <table className="w-full border-collapse">

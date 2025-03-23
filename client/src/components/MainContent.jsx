@@ -72,7 +72,7 @@ const MainContent = () => {
 	return (
 		<main>
 			{
-				recipe ? null : <Link to='/history'><button className='bg-black text-white px-4 py-1 rounded-sm cursor-pointer ml-10'>History</button></Link>
+				recipe ? null : <Link to='/history'><button className='bg-black text-white px-4 py-1 rounded-sm cursor-pointer ml-8 mb-4 md:mb-6 md:ml-10'>History</button></Link>
 			}
 			
 			{

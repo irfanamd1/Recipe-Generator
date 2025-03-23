@@ -47,7 +47,7 @@ const RecipeDisplay = () => {
   return (
     <div>
       <div className="p-4">
-        <Link to='/history' className="ml-4 px-3 py-1 bg-black !text-white rounded-sm text-sm">⮘&nbsp;Go Back</Link>
+        <Link to='/history' className="ml-4 px-3 py-1 bg-black !text-white rounded-sm text-sm">Go Back</Link>
         <p className="mx-4 mt-4 text-[16px] whitespace-pre-wrap">{recipe.recipe}</p>
       </div>
     </div>
