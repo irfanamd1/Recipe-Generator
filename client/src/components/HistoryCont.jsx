@@ -44,6 +44,12 @@ const HistoryCont = () => {
     fetchRecipes();
   }, [email]);
 
+  if (!recipes) {
+    return (
+      <div className="p-6 absolute top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%] text-gray-600">Loading ...</div>
+    );
+  }
+
   return (
     <div className="max-w-4xl mx-auto p-6">
       <Link to="/">
