@@ -6,9 +6,14 @@ import axios from "axios";
 
 const HistoryCont = () => {
   const { user } = useUser();
+
   const email = user.primaryEmailAddress.emailAddress;
+
   const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+
   const [recipes, setRecipes] = useState([]);
+
+  const [loading, setLoading] = useState(true);
 
   const extractRecipeName = (recipeText) => {
     const lines = recipeText.split("\n").filter((line) => line.trim() !== "");
@@ -38,17 +43,16 @@ const HistoryCont = () => {
         });
         setRecipes(res.data.recipes);
       } catch (err) {
-        console.error("Error fetching recipes:", err.response?.data?.message || err.message);
+        console.error(
+          "Error fetching recipes:",
+          err.response?.data?.message || err.message
+        );
+      } finally {
+        setLoading(false);
       }
     };
     fetchRecipes();
   }, [email]);
-
-  if (!recipes) {
-    return (
-      <div className="p-6 absolute top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%] text-gray-600">Loading ...</div>
-    );
-  }
 
   return (
     <div className="max-w-4xl mx-auto p-6">
@@ -58,9 +62,29 @@ const HistoryCont = () => {
         </button>
       </Link>
 
-      <h1 className="text-2xl font-semibold mb-6 text-center text-gray-800">Recipe History</h1>
+      <h1 className="text-2xl font-semibold mb-6 text-center text-gray-800">
+        Recipe History
+      </h1>
 
-      {recipes.length > 0 ? (
+      {loading ? (
+        <div className="p-6 absolute top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%] text-gray-600 flex flex-col items-center">
+            <div className="relative w-10 h-10">
+                <div className="w-full h-full border-[6px] border-transparent rounded-full animate-spin"
+                    style={{
+                        borderTopColor: "red",
+                        borderRightColor: "transparent",
+                        borderBottomColor: "green",
+                        borderLeftColor: "transparent",
+                        maskImage: "conic-gradient(from 0deg at 50% 50%, red 120deg, transparent 121deg, green 240deg, transparent 241deg, red 360deg)"
+                    }}>
+                </div>
+            </div>
+            <p className="mt-4 text-lg font-semibold animate-pulse">Loading...</p>
+        </div>
+    
+    
+      
+      ) : recipes.length > 0 ? (
         <div className="overflow-x-auto flex justify-center">
           <table className="w-[800px] border border-gray-300 rounded-lg overflow-hidden shadow-md border-collapse">
             <thead className="bg-gray-100">
@@ -73,11 +97,16 @@ const HistoryCont = () => {
               {recipes.map((recipe, index) => (
                 <tr
                   key={recipe._id}
-                  className={`hover:bg-gray-50 transition ${index % 2 === 0 ? "bg-gray-50" : "bg-white"}`}
+                  className={`hover:bg-gray-50 transition ${
+                    index % 2 === 0 ? "bg-gray-50" : "bg-white"
+                  }`}
                 >
                   <td className="p-4">
                     {extractRecipeName(recipe.recipe)}...
-                    <Link to={`/recipe/${recipe._id}`} className="text-blue-600 pl-2 text-sm hover:underline">
+                    <Link
+                      to={`/recipe/${recipe._id}`}
+                      className="text-blue-600 pl-2 text-sm hover:underline"
+                    >
                       Read more
                     </Link>
                   </td>
