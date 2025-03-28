@@ -85,7 +85,7 @@ const MainContent = () => {
   };
 
   return (
-    <main className="p-6 max-w-6xl mx-auto min-h-screen">
+    <main className="p-6 max-w-6xl mx-auto">
       {!recipe && (
         <Link to="/history" className="block mb-4">
           <button className="flex items-center bg-black text-white px-4 py-2 rounded-md transition hover:bg-gray-800">
