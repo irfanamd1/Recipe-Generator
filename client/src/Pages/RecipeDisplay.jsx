@@ -35,12 +35,12 @@ const RecipeDisplay = () => {
 
   if (!recipe) {
     return (
-      <div className="p-6 flex items-center justify-center min-h-screen text-gray-600">Loading recipe...</div>
+      <div className="p-6 absolute top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%] text-gray-600">Loading recipe...</div>
     );
   }
 
   return (
-    <div className="flex flex-col items-center min-h-screen p-6 pt-0">
+    <div className="flex flex-col items-center p-6 pt-0">
       <div className="w-full max-w-6xl bg-white dark:bg-gray-800 p-6 pt-0">
         <Link to="/history" className="inline-block mb-4 !text-black text-3xl">
            <IoArrowBackCircleSharp />
