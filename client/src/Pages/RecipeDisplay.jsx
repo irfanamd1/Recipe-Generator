@@ -35,7 +35,7 @@ const RecipeDisplay = () => {
 
   if (!recipe) {
     return (
-      <div className="p-6 text-center text-gray-600">Loading recipe...</div>
+      <div className="p-6 flex items-center justify-center min-h-screen text-gray-600">Loading recipe...</div>
     );
   }
 
