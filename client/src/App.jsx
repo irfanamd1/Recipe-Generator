@@ -8,6 +8,7 @@ import NotFoundPage from './Pages/NotFound';
 import { useEffect } from 'react';
 import History from './Pages/History';
 import RecipeDisplay from './Pages/RecipeDisplay';
+import './index.css'
 
 const ProtectedRoute = ({ children }) => {
 	const { isSignedIn } = useAuth();
