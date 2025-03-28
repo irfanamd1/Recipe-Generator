@@ -1,104 +1,98 @@
-import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { useUser } from '@clerk/clerk-react';
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { useUser } from "@clerk/clerk-react";
 import { FaRegTrashAlt } from "react-icons/fa";
-import axios from "axios"
+import axios from "axios";
 
 const HistoryCont = () => {
+  const { user } = useUser();
+  const email = user.primaryEmailAddress.emailAddress;
+  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+  const [recipes, setRecipes] = useState([]);
 
-    const { user } = useUser();
-
-    const email = user.primaryEmailAddress.emailAddress;
-
-    const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
-
-    const [recipes, setRecipes] = useState([]);
-
-    const extractRecipeName = (recipeText) => {
-      const lines = recipeText.split('\n').filter(line => line.trim() !== '');
-      
-      for (const line of lines) {
-          if (line.startsWith("## ")) {
-              return line.replace("## ", "").trim();
-          }
-      }
-  
-      return lines.length > 0 ? lines[0] : 'Unknown Recipe';
+  const extractRecipeName = (recipeText) => {
+    const lines = recipeText.split("\n").filter((line) => line.trim() !== "");
+    for (const line of lines) {
+      if (line.startsWith("### ")) return line.replace("### ", "").trim();
+      if (line.startsWith("## ")) return line.replace("## ", "").trim();
+      if (line.startsWith("# ")) return line.replace("# ", "").trim();
+    }
+    return lines.length > 0 ? lines[0] : "Unnamed Recipe";
   };
 
-const deleteRecipe = async (id) => {
+  const deleteRecipe = async (id) => {
     try {
-        const res = await axios.delete(`${BACKEND_URL}/api/recipes/${id}`);
-
-        setRecipes((prev) => prev.filter((recipe) => recipe._id !== id));
+      await axios.delete(`${BACKEND_URL}/api/recipes/${id}`);
+      setRecipes((prev) => prev.filter((recipe) => recipe._id !== id));
     } catch (err) {
-        console.error("Error deleting recipe:", err);
-        setError(err.response?.data?.message || "Failed to delete recipe.");
+      console.error("Error deleting recipe:", err);
     }
-};
+  };
 
-
-
-useEffect(() => {
+  useEffect(() => {
     const fetchRecipes = async () => {
-        try {
-            if (!email) {
-                console.error("User email not found.");
-                return;
-            }
-
-            const res = await axios.get(`${BACKEND_URL}/api/recipes`, {
-                params: { email }
-            });
-
-            setRecipes(res.data.recipes);
-        } catch (err) {
-            console.error("Error fetching recipes:", err.response?.data?.message || err.message);
-        }
+      if (!email) return console.error("User email not found.");
+      try {
+        const res = await axios.get(`${BACKEND_URL}/api/recipes`, {
+          params: { email },
+        });
+        setRecipes(res.data.recipes);
+      } catch (err) {
+        console.error("Error fetching recipes:", err.response?.data?.message || err.message);
+      }
     };
-
     fetchRecipes();
-}, [email]);
-    
+  }, [email]);
 
-    return (
-        <div className="mx-4">
-            <Link to='/'><button className='mb-3 ml-4 md:ml-10 px-3 py-1 bg-black text-white rounded-sm text-sm'>Go Back</button></Link>
-            <h1 className="text-2xl font-bold mb-4 text-center">Recipe History</h1>
-            {recipes.length > 0 ? (
-                <table className="w-full border-collapse">
-                    <thead>
-                        <tr>
-                            <th className="border p-2">Recipe Name</th>
-                            <th className="border p-2">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {recipes.map((recipe) => (
-                          
-                          
-                            <tr key={recipe._id}>
-                                <td className="border p-2 w-[90%]">
-                                {extractRecipeName(recipe.recipe)}...<Link to={`/recipe/${recipe._id}`}><span className='text-sm pl-3'>read more</span></Link>
-                                </td>
-                                <td className="border p-2 text-center">
-                                                
-                                    <button 
-                                        onClick={() => deleteRecipe(recipe._id)} 
-                                        className="px-2 py-1 text-white bg-black rounded-md text-center"
-                                    >
-                                        <FaRegTrashAlt />
-                                    </button>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            ) : (
-                <p className='absolute top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%]'>No recipes found.</p>
-            )}
+  return (
+    <div className="max-w-4xl mx-auto p-6">
+      <Link to="/">
+        <button className="mb-4 px-4 py-2 bg-black text-white rounded-md text-sm transition hover:bg-gray-800">
+          ⮘ Go Back
+        </button>
+      </Link>
+
+      <h1 className="text-2xl font-semibold mb-6 text-center text-gray-800">Recipe History</h1>
+
+      {recipes.length > 0 ? (
+        <div className="overflow-x-auto flex justify-center">
+          <table className="w-[800px] border border-gray-300 rounded-lg overflow-hidden shadow-md border-collapse">
+            <thead className="bg-gray-100">
+              <tr className="text-gray-700">
+                <th className="p-4 text-left w-3/4">Recipe Name</th>
+                <th className="p-4 text-center w-1/4">Actions</th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {recipes.map((recipe, index) => (
+                <tr
+                  key={recipe._id}
+                  className={`hover:bg-gray-50 transition ${index % 2 === 0 ? "bg-gray-50" : "bg-white"}`}
+                >
+                  <td className="p-4">
+                    {extractRecipeName(recipe.recipe)}...
+                    <Link to={`/recipe/${recipe._id}`} className="text-blue-600 pl-2 text-sm hover:underline">
+                      Read more
+                    </Link>
+                  </td>
+                  <td className="p-4 text-center">
+                    <button
+                      onClick={() => deleteRecipe(recipe._id)}
+                      className="p-2 text-red-600 hover:text-red-800 transition"
+                    >
+                      <FaRegTrashAlt size={18} />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
-    );
+      ) : (
+        <p className="text-gray-600 text-center mt-20">No recipes found.</p>
+      )}
+    </div>
+  );
 };
 
 export default HistoryCont;

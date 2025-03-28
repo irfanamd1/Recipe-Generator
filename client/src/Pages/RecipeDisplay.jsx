@@ -1,57 +1,62 @@
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
+import ReactMarkdown from 'react-markdown';
+import { IoArrowBackCircleSharp } from "react-icons/io5";
 
 const RecipeDisplay = () => {
-
   const { recipeId } = useParams();
-
   const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
   const [recipe, setRecipe] = useState(null);
-
-  const cleanRecipeText = (text) => {
-    return text
-      .replace(/[*#_~`]/g, '') // Remove special markdown characters
-      .replace(/\n{2,}/g, '\n') // Replace multiple newlines with a single newline
-      .replace(/\s{2,}/g, ' ')  // Replace multiple spaces with a single space
-      .trim();                  // Remove leading and trailing whitespace
-  };
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchRecipe = async () => {
       try {
         const res = await axios.get(`${BACKEND_URL}/api/recipe/${recipeId}`);
-        const cleanedRecipe = cleanRecipeText(res.data.recipe.recipe); // Clean the text
-        setRecipe({ ...res.data.recipe, recipe: cleanedRecipe });
+        setRecipe(res.data.recipe);
       } catch (err) {
         console.error("Error fetching recipe:", err);
+        setError("Failed to load recipe. Please try again.");
       }
     };
-  
+
     if (recipeId) {
       fetchRecipe();
     }
   }, [recipeId]);
 
+  if (error) {
+    return (
+      <div className="p-6 text-center text-red-500">{error}</div>
+    );
+  }
+
   if (!recipe) {
     return (
-      <div>
-        <div className="p-4">
-          <p>Loading recipe...</p>
-        </div>
-      </div>
+      <div className="p-6 text-center text-gray-600">Loading recipe...</div>
     );
   }
 
   return (
-    <div>
-      <div className="p-4">
-        <Link to='/history' className="ml-4 px-3 py-1 bg-black !text-white rounded-sm text-sm">Go Back</Link>
-        <p className="mx-4 mt-4 text-[16px] whitespace-pre-wrap">{recipe.recipe}</p>
+    <div className="flex flex-col items-center min-h-screen p-6 pt-0">
+      <div className="w-full max-w-6xl bg-white dark:bg-gray-800 p-6 pt-0">
+        <Link to="/history" className="inline-block mb-4 !text-black text-3xl">
+           <IoArrowBackCircleSharp />
+        </Link>
+
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+          {recipe.title || "Recipe Recommendation"}
+        </h2>
+
+        <div className=" max-w-none text-gray-700 leading-relaxed">
+          <ReactMarkdown>{recipe.recipe}</ReactMarkdown>
+        </div>
       </div>
     </div>
   );
 };
 
 export default RecipeDisplay;
+

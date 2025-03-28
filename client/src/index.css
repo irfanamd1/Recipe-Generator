@@ -163,8 +163,9 @@ form.ingredients-input {
   justify-content: space-between;
   background-color: #F0EFEB;
   margin: 30px;
-  padding: 18px 41px;
+  padding: 18px;
   border-radius: 8px;
+  gap: 10;
 }
 
 .get-recipe-container h2 {

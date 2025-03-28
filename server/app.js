@@ -19,8 +19,8 @@ app.get('/', (req, res) => {
 })
 
 app.post('/api/generateRecipe', async(req, res) => {
-    const { ingredients, foodStyle, allowExtraIngredients, name, email } = req.body;
-    const recipe = await generateRecipeWithGemini(ingredients, foodStyle, allowExtraIngredients, name, email);
+    const { ingredients, cuisine, meal, dietary, servings, cooking, time, flavor, skill, extraInc, name, email } = req.body;
+    const recipe = await generateRecipeWithGemini(ingredients, cuisine, meal, dietary, servings, cooking, time, flavor, skill, extraInc, name, email);
 
     if (recipe.success) {
         try {

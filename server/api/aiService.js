@@ -5,11 +5,35 @@ dotenv.config();
 
 const generativeAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
-export const generateRecipeWithGemini = async (ingredientsArr, foodStyle, allowExtraIngredients, name, email) => {
+export const generateRecipeWithGemini = async (ingredientsArr, cuisine, meal, dietary, servings, cooking, time, flavor, skill, extraInc, name, email) => {
     const ingredientsStr = ingredientsArr.join(", ");
-    const SYSTEM_PROMPT = `You are an assistant that receives a list of ingredients from the user and suggests a ${foodStyle ? foodStyle : 'any'}-style recipe they can make.
-        ${allowExtraIngredients ? "Use some or all of the provided ingredients. You may include additional ingredients if necessary, but keep them minimal." : "Use only the provided ingredients. Do not add any extra ingredients beyond what the user has mentioned." }.
-        Format your response in Markdown for better readability on a web page.`;
+    // const SYSTEM_PROMPT = `You are an assistant that receives a list of ingredients from the user and suggests a ${foodStyle ? foodStyle : 'any'}-style recipe they can make.
+    //     ${allowExtraIngredients ? "Use some or all of the provided ingredients. You may include additional ingredients if necessary, but keep them minimal." : "Use only the provided ingredients. Do not add any extra ingredients beyond what the user has mentioned." }.
+    //     Format your response in Markdown for better readability on a web page.`;
+
+    let SYSTEM_PROMPT = `You are an assistant that receives a list of ingredients that a user has and suggests a recipe they could make. ${extraInc === "Yes" ? "Use some or all of the provided ingredients. You may include additional ingredients if necessary, but keep them minimal." : "Use only the provided ingredients. Do not add any extra ingredients beyond what the user has mentioned." }. Format your response in Markdown for better readability on a web page.`;
+
+    if (cuisine || meal || dietary || servings || cooking || time || flavor || skill) {
+      SYSTEM_PROMPT = `You are an assistant that receives a list of ingredients from the user and suggests a${
+        cuisine ? ` ${cuisine}-style` : "any"
+      } recipe they can make.${
+        meal ? ` The dish should be suitable for ${meal.toLowerCase()}.` : ""
+      }${
+        dietary ? ` It should align with ${dietary.toLowerCase()} dietary preferences.` : ""
+      }${
+        servings && servings !== "None" ? ` The recipe should serve ${servings} people.` : ""
+      }${
+        cooking ? ` It should use ${cooking.toLowerCase()} as the cooking method.` : ""
+      }${
+        time ? ` The estimated cooking time should be ${time.toLowerCase()}.` : ""
+      }${
+        flavor ? ` The dish should have a ${flavor.toLowerCase()} flavor profile.` : ""
+      }${
+        skill ? ` It should be appropriate for a ${skill.toLowerCase()} cook.` : ""
+      }${
+        extraInc === "Yes" ? "Use some or all of the provided ingredients. You may include additional ingredients if necessary, but keep them minimal." : "Use only the provided ingredients. Do not add any extra ingredients beyond what the user has mentioned." }
+      } Format your response in Markdown for better readability on a web page.`;
+    }
 
     try {
         const model = await generativeAI.getGenerativeModel({
