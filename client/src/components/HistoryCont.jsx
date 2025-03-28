@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useUser } from "@clerk/clerk-react";
 import { FaRegTrashAlt } from "react-icons/fa";
 import axios from "axios";
+import { IoIosArrowBack } from "react-icons/io";
 
 const HistoryCont = () => {
   const { user } = useUser();
@@ -58,7 +59,8 @@ const HistoryCont = () => {
     <div className="max-w-4xl mx-auto p-6">
       <Link to="/">
         <button className="mb-4 px-4 py-2 bg-black text-white rounded-md text-sm transition hover:bg-gray-800">
-          ⮘ Go Back
+        <IoIosArrowBack className="inline mr-1" />
+        Go Back
         </button>
       </Link>
 
@@ -97,9 +99,7 @@ const HistoryCont = () => {
               {recipes.map((recipe, index) => (
                 <tr
                   key={recipe._id}
-                  className={`hover:bg-gray-50 transition ${
-                    index % 2 === 0 ? "bg-gray-50" : "bg-white"
-                  }`}
+                  className='bg-gray-50 transition'
                 >
                   <td className="p-4">
                     {extractRecipeName(recipe.recipe)}...

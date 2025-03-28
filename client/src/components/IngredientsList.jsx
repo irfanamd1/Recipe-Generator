@@ -3,7 +3,7 @@ import { FaRegTrashAlt } from "react-icons/fa";
 const IngredientsList = ({ ingredients, onRemove }) => {
   return (
     <section>
-      <div className="border mx-6 md:w-1/2 md:mx-auto mt-4 p-3 max-h-40 overflow-y-auto rounded-md bg-white shadow-md">
+      <div className="border md:w-1/2 md:mx-auto mt-4 p-3 max-h-40 overflow-y-auto rounded-md bg-white shadow-md">
         {ingredients.length > 0 ? (
           ingredients.map((item, index) => (
             <span
