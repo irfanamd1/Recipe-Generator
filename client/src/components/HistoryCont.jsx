@@ -17,14 +17,28 @@ const HistoryCont = () => {
   const [loading, setLoading] = useState(true);
 
   const extractRecipeName = (recipeText) => {
-    const lines = recipeText.split("\n").filter((line) => line.trim() !== "");
-    for (const line of lines) {
-      if (line.startsWith("### ")) return line.replace("### ", "").trim();
-      if (line.startsWith("## ")) return line.replace("## ", "").trim();
-      if (line.startsWith("# ")) return line.replace("# ", "").trim();
+    if (!recipeText) return "Unknown Recipe";
+
+    let parsedRecipe = null;
+
+    if (typeof recipeText === "string") {
+        try {
+            let cleanJson = recipeText
+                .replace(/```javascript|```/g, "")
+                .trim()
+                .replace(/^const aiRecipe\s*=\s*/, "")
+                .replace(/;$/, "");
+
+            parsedRecipe = new Function(`return (${cleanJson})`)();
+        } catch (error) {
+            return "Invalid Recipe";
+        }
+    } else if (typeof recipeText === "object") {
+        parsedRecipe = recipeText;
     }
-    return lines.length > 0 ? lines[0] : "Unnamed Recipe";
-  };
+    return parsedRecipe?.recipeName || "Unknown Recipe"; // Ensure only recipeName is returned
+};
+
 
   const deleteRecipe = async (id) => {
     try {
@@ -54,6 +68,8 @@ const HistoryCont = () => {
     };
     fetchRecipes();
   }, [email]);
+
+  
 
   return (
     <div className="max-w-4xl mx-auto p-6">
@@ -98,7 +114,7 @@ const HistoryCont = () => {
             <tbody className="bg-white divide-y divide-gray-200">
               {recipes.map((recipe, index) => (
                 <tr
-                  key={recipe._id}
+                  key={index}
                   className='bg-gray-50 transition'
                 >
                   <td className="p-4">

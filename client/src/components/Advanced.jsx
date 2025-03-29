@@ -27,7 +27,7 @@ const Advanced = ({
       {/* Collapsible Advanced Options */}
       <div
         className={`border mt-3 p-4 rounded-lg bg-white shadow-md transition-all duration-300 ease-in-out ${
-          isOpen ? "opacity-100 max-h-screen py-4" : "opacity-0 max-h-0 overflow-hidden p-0"
+          isOpen ? "opacity-100 py-4" : "opacity-0 max-h-0 overflow-hidden p-0"
         }`}
       >
         <div className="grid md:grid-cols-2 gap-6">

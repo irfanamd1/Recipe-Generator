@@ -82,7 +82,7 @@ const MainContent = () => {
     setRecipe(res.data.response);
     setIngredients([]);
     setLoading(false);
-  };
+  };  
 
   return (
     <main className="p-6 max-w-6xl mx-auto">

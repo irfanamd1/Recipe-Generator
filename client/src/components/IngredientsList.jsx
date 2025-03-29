@@ -9,7 +9,7 @@ const IngredientsList = ({ ingredients, onRemove }) => {
             <span
               onClick={() => onRemove(index)}
               key={index}
-              className="text-sm border border-gray-400 hover:border-red-600 hover:cursor-pointer hover:bg-red-100 rounded-full inline-flex items-center px-3 py-1 text-gray-700 bg-gray-200 mx-2"
+              className="text-sm border border-gray-400 hover:border-red-600 hover:cursor-pointer hover:bg-red-100 rounded-full inline-flex items-center px-3 py-1 text-gray-700 bg-gray-200 m-2"
             >
               {item
                 .split(" ")
