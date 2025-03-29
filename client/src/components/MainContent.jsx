@@ -87,9 +87,9 @@ const MainContent = () => {
   return (
     <main className="p-6 max-w-6xl mx-auto">
       {!recipe && (
-        <Link to="/history" className="block mb-4">
-          <button className="flex items-center bg-black text-white px-4 py-2 rounded-md transition hover:bg-gray-800">
-            <FaHistory className="mr-2" /> History
+        <Link to="/history">
+          <button className=" bg-black text-white px-4 py-2 rounded-md transition hover:bg-gray-800">
+            <FaHistory className="mr-1 inline" /> History
           </button>
         </Link>
       )}
@@ -102,7 +102,7 @@ const MainContent = () => {
           Clear Recipe
         </button>
       ) : (
-        <div className="md:w-1/2 md:mx-auto">
+        <div className="md:w-1/2 md:mx-auto mt-4">
           <IngredientAuto onSelect={handleSelect} />
         </div>
       )}
