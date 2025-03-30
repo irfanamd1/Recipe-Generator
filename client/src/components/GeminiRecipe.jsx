@@ -37,6 +37,18 @@ const GeminiRecipe = ({ recipe }) => {
     const pdf = new jsPDF();
     let y = 10;
 
+    y += 6;
+    const pageWidth = pdf.internal.pageSize.width;
+    pdf.setFont("courier", "bold");
+    pdf.setFontSize(26);
+    pdf.text('CHEFZIA', pageWidth / 2, y, { align: "center" });
+    y += 6;
+
+    pdf.setDrawColor(0);
+    pdf.setLineWidth(0.3);
+    pdf.line(10, y, pageWidth - 10, y);
+    y += 10;
+
     pdf.setFont("helvetica", "bold");
     pdf.setFontSize(18);
     pdf.text(rec.recipeName, 10, y);
