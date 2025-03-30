@@ -178,7 +178,7 @@ const GeminiRecipe = ({ recipe }) => {
 
   return (
     <div>
-        <section id="recipe-content" className="max-w-6xl mx-auto p-6">
+        <section id="recipe-content" className="max-w-6xl mx-auto pt-5 pl-2">
             <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-4">
                 {rec.recipeName}
             </h2>
@@ -203,7 +203,7 @@ const GeminiRecipe = ({ recipe }) => {
                 ))}
                 </ul>
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
                 <p className="bg-gray-100 dark:bg-gray-800 p-2 rounded-md text-sm text-gray-700 dark:text-gray-300">
                 <strong>Prep Time:</strong> {rec.prepTime}
                 </p>

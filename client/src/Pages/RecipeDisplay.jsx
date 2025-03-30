@@ -214,8 +214,8 @@ const RecipeDisplay = () => {
   };
 
   return (
-    <div className="flex flex-col items-center p-6 pt-0">
-      <div className="w-full max-w-6xl bg-white dark:bg-gray-800 p-6 pt-0">
+    <div className="flex flex-col items-center">
+      <div className="w-full max-w-6xl bg-white p-6 pt-0">
         <Link to="/history" className="inline-block !text-black text-3xl">
           <IoArrowBackCircleSharp />
         </Link>
@@ -250,7 +250,7 @@ const RecipeDisplay = () => {
               ))}
             </ul>
           </div>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
             <p className="bg-gray-100 dark:bg-gray-800 p-2 rounded-md text-sm text-gray-700 dark:text-gray-300">
               <strong>Preparation Time:</strong> {rec.prepTime}
             </p>
